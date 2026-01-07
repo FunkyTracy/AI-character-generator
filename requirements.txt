@@ -1,0 +1,45 @@
+# AI Character Generator - Dependencies
+# =====================================
+# Install these with: pip install -r requirements.txt
+# TIP: Consider using a virtual environment first:
+#   python -m venv venv
+#   source venv/bin/activate  (Mac/Linux)
+#   venv\Scripts\activate     (Windows)
+
+# --- Web Framework ---
+# FastAPI is a modern, fast web framework for building APIs
+# It's great for learning because it auto-generates documentation
+fastapi==0.109.0
+uvicorn==0.27.0  # ASGI server to run FastAPI
+
+# --- Graph Database ---
+# Neo4j is the most popular graph database - perfect for relationship data
+# You'll learn Cypher query language (like SQL but for graphs)
+neo4j==5.16.0
+
+# --- AI/LLM Integration ---
+# OpenAI's library for GPT models - you'll learn prompt engineering
+openai==1.12.0
+# LangChain helps structure AI workflows - optional but great for learning
+langchain==0.1.6
+langchain-openai==0.0.5
+
+# --- Authentication ---
+# For user accounts and secure password handling
+python-jose[cryptography]==3.3.0  # JWT tokens
+passlib[bcrypt]==1.7.4            # Password hashing
+python-multipart==0.0.9           # Form data handling
+
+# --- Data Validation ---
+# Pydantic handles data validation - FastAPI uses it automatically
+pydantic==2.6.0
+pydantic-settings==2.1.0  # For environment configuration
+
+# --- Utilities ---
+python-dotenv==1.0.1  # Load environment variables from .env file
+httpx==0.26.0         # Modern HTTP client (for testing)
+
+# --- Development & Testing ---
+pytest==8.0.0
+pytest-asyncio==0.23.4
+
