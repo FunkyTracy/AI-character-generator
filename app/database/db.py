@@ -69,3 +69,46 @@ def link_character_to_story(tx, from_id: str, to_id: str, rel_type: str, rel_pro
     """
 
     tx.run(query, {"from_id": from_id, "to_id": to_id, "rel_props": rel_props})
+
+# ------ Grab Context Functions -------
+
+def retrieve_character_context(tx, character_id: str) -> dict[str, Any]:
+    matched_character = tx.run(
+        """
+        MATCH (c:Character)
+        WHERE c.id contains $c_id
+        RETURN 
+            c.name AS name,
+            c.gender AS gender,
+            c.race AS race,
+            c.age AS age,
+            c.vibe AS vibe,
+            c.appearance AS appearance,
+            c.personality AS personality,
+            c.backstory AS backstory,
+            c.interests AS interests,
+            c.abilities AS abilities
+        """,
+        c_id=character_id,
+    ).data()
+
+    neighbors: list[dict[str, Any]] = []
+
+    if matched_character:
+        neighbors = tx.run(
+            """
+            MATCH (c:Character {id:$c_id})-[r]-(n)
+            RETURN
+                type(r) AS rel_type,
+                labels(n)[0] AS neighbor_label,
+                properties(n) AS neighbor_props
+            LIMIT 30
+            """,
+            c_id=character_id,
+        ).data()
+
+    return {
+        "query": character_id,
+        "matched_character": matched_character,
+        "neighbors": neighbors
+    }

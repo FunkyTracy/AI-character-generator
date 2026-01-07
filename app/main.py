@@ -19,12 +19,16 @@ HINT: See EXAMPLES.md for FastAPI patterns
 """
 
 from .database.neo4j_connection import Neo4jDB
-from .database.db import init_schema, upsert_character, upsert_story, link_character_to_story
+from .database.db import init_schema, upsert_character, upsert_story, link_character_to_story, retrieve_character_context
 from .models.character import Character
 from .models.story import Story
+from .ai.character_generator import CharacterGenerator
+from .ai.ollama import OllamaLLM
 
 def main() -> None:
     db = Neo4jDB()
+    llm = OllamaLLM()
+    character_gen = CharacterGenerator(llm)
 
     simon = Character(
         name="Simon",
@@ -69,6 +73,12 @@ def main() -> None:
         db.execute_write(link_character_to_story, str(simon.id), str(ashlynStory.id), "SIDEKICK")
         db.execute_write(link_character_to_story, str(frechetta.id), str(ashlynStory.id), "SIDEKICK")
     
+        context = db.execute_read(retrieve_character_context, str(frechetta.id))
+
+        prompt = "I need a new character to be friends with Freshchetta in my story. Can you please give me some ideas?"
+        raw = character_gen.generate_character(prompt, context)
+        print(raw)
+        
     finally:
         db.close()
 

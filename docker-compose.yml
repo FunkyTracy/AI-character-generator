@@ -8,6 +8,24 @@ services:
       - NEO4J_AUTH=neo4j/superpass123
     volumes:
       - neo4j_data:/data
+    
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["sh", "-lc", "ollama pull qwen2.5 && ollama list"]
+    restart: "no"
 
 volumes:
   neo4j_data:
+  ollama:

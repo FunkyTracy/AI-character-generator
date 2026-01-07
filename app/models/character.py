@@ -84,10 +84,10 @@ class Vibe(str, Enum):
 
 class CharacterBase(BaseModel):
     name: str
-    gender: Gender
-    race: Race
+    gender: str
+    race: str
     age: int
-    vibe: list[Vibe]
+    vibe: list[str]
     appearance: str
     personality: str
     backstory: str
@@ -96,10 +96,10 @@ class CharacterBase(BaseModel):
 
 class CharacterCreateInput(CharacterBase):
     name: Optional[str] = None
-    gender: Optional[Gender] = None
-    race: Optional[Race] = None
+    gender: Optional[str] = None
+    race: Optional[str] = None
     age: Optional[int] = None
-    vibe: Optional[list[Vibe]] = None
+    vibe: Optional[list[str]] = None
     appearance: Optional[str] = None
     personality: Optional[str] = None
     backstory: Optional[str] = None
@@ -107,7 +107,10 @@ class CharacterCreateInput(CharacterBase):
     abilities: Optional[list[str]] = None
 
 class CharacterSuggestion(CharacterBase):
-    pass
+    evidence_node_ids: list[str] = Field(default_factory=list)
+
+class CharacterSuggestionList(BaseModel):
+    characters: list[CharacterSuggestion]
 
 class Character(CharacterBase):
     id: uuid.UUID = Field(default_factory=uuid.uuid4)

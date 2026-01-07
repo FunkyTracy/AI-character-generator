@@ -37,7 +37,7 @@ class Genre(str, Enum):
 class StoryCreate(BaseModel):
     title: str = Field(...)
     description: str = Field(...)
-    genre: Genre
+    genre: str = Field(...)
 
 class Story(StoryCreate):
     id: uuid.UUID = Field(default_factory=uuid.uuid4)

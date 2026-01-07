@@ -19,7 +19,35 @@ PROMPT ENGINEERING TIPS:
 HINT: See EXAMPLES.md for OpenAI patterns
 """
 
-from openai import OpenAI
-from app.config import settings
+import json
+from typing import Any
+from app.ai.llm_client import LLMClient
+from ..models.character import CharacterSuggestionList
+from .prompt_library import CHARACTER_CREATION_PROMPT
+from .helpers import extract_json_object
 
-# TODO: Create your character generator class here
+class CharacterGenerator:
+    def __init__(self, llm: LLMClient) -> None:
+        self.llm = llm
+    
+    def generate_character(self, user_prompt: str, context: dict[str, Any]) -> CharacterSuggestion:
+        messages = [
+            {
+                "role": "system",
+                "content": CHARACTER_CREATION_PROMPT,
+            },
+            {
+                "role": "user",
+                "content": f"Prompt:\n{user_prompt}\n\nContext JSON:\n{json.dumps(context, ensure_ascii=False)}",
+            },
+        ]
+
+        raw = self.llm.chat(messages, temperature=0.7)
+
+        print("------- Raw LLM Response --------")
+        print(raw)
+        print("--------- End Raw Output ---------")
+
+        data = extract_json_object(raw)
+
+        return CharacterSuggestionList.model_validate(data)
