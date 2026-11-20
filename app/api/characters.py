@@ -1,25 +1,21 @@
 """
 Characters Routes
 =================
-Character CRUD and AI generation.
-
-YOUR TASKS:
-1. Basic CRUD for characters (under a story)
-2. POST /stories/{id}/characters/generate - AI suggestions
-3. POST /stories/{id}/characters/accept - save a suggestion
-4. Endpoints for managing relationships between characters
-
-THE AI WORKFLOW:
-1. User provides requirements (CharacterCreateInput)
-2. Your endpoint calls the AI generator
-3. AI returns suggestions (CharacterSuggestion list)
-4. User picks one, you save it as a Character
-
-HINT: See EXAMPLES.md for patterns
+Read the cast of one story. Generation and accept-suggestion come next.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+
+from ..database.db import get_story_atlas
+from ..database.neo4j_connection import Neo4jDB
+from .deps import get_db
 
 router = APIRouter(prefix="/stories/{story_id}/characters", tags=["characters"])
 
-# TODO: Create your character endpoints here
+
+@router.get("")
+def list_characters(story_id: str, db: Neo4jDB = Depends(get_db)):
+    atlas = db.execute_read(get_story_atlas, story_id)
+    if atlas is None:
+        raise HTTPException(status_code=404, detail="Story not found")
+    return atlas["characters"]

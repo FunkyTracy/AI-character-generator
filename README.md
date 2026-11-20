@@ -2,6 +2,21 @@
 
 A learning project for AI integration, graph databases, and Python APIs.
 
+## Character ledger
+
+The current slice is character tracking. One book’s cast lives in Neo4j. The ledger shows every tracked detail, the directed bonds between characters, and the fields that are still thin.
+
+Manuscript ingest, the suggestion wizard, and series chronology come after this ledger is a reliable home for characters. The plan for those is in [FUTURE_IDEAS.md](FUTURE_IDEAS.md). Places, creatures, factions, and items are reserved in `app/models/world_elements.py` and are not stored yet.
+
+```bash
+docker compose up -d neo4j
+uvicorn app.main:app --reload
+```
+
+Open http://localhost:8000. If the graph is empty, use **Load sample story**.
+
+The Docker Compose password is `superpass123`. `NEO4J_PASSWORD` in `.env` needs to match.
+
 ## 🎯 What You'll Build
 
 An API that lets users:
@@ -34,9 +49,13 @@ pip install -r requirements.txt
 
 # 3. Copy and edit config
 cp env.example.txt .env
-# Edit .env with your credentials
+# Edit .env with your credentials.
+# If you use the Compose file, set NEO4J_PASSWORD=superpass123
 
-# 4. Run (once you've built it!)
+# 4. Start Neo4j
+docker compose up -d neo4j
+
+# 5. Run the character ledger
 uvicorn app.main:app --reload
 ```
 

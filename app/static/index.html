@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="title-block">
+      <p class="eyebrow">Character ledger</p>
+      <h1 id="story-title">Loading the ledger…</h1>
+      <p id="story-meta" class="meta"></p>
+      <p id="story-description" class="description"></p>
+    </div>
+    <div class="top-actions">
+      <label class="story-picker">
+        Story
+        <select id="story-select"></select>
+      </label>
+      <button id="sample-button" type="button">Load sample story</button>
+    </div>
+  </header>
+
+  <p id="banner" class="banner" hidden></p>
+
+  <main id="workspace" class="workspace" hidden>
+    <section class="cast" aria-labelledby="dossier-heading">
+      <div class="section-bar">
+        <h2 id="dossier-heading">Dossiers</h2>
+        <input id="filter" type="search" placeholder="Find a character" autocomplete="off">
+      </div>
+      <div id="dossiers"></div>
+    </section>
+
+    <aside class="map">
+      <div class="section-bar">
+        <h2>Web</h2>
+      </div>
+      <div id="graph"></div>
+
+      <div class="section-bar threads-bar">
+        <h2>Open threads</h2>
+        <span id="gap-count" class="count">0</span>
+      </div>
+      <ul id="gaps" class="gaps"></ul>
+
+      <form id="bond-form" class="bond-form">
+        <h2>Add a bond</h2>
+        <p id="bond-hint" class="form-hint">Direction matters. This does not create the reverse bond.</p>
+        <label>
+          From
+          <select id="bond-source" required></select>
+        </label>
+        <label>
+          Kind
+          <select id="bond-kind" required></select>
+        </label>
+        <label>
+          To
+          <select id="bond-target" required></select>
+        </label>
+        <label>
+          Note
+          <input id="bond-note" type="text" maxlength="280" placeholder="How do they know each other?">
+        </label>
+        <p id="bond-error" class="form-error" hidden></p>
+        <button id="bond-submit" type="submit">Save bond</button>
+      </form>
+    </aside>
+  </main>
+
+  <section id="empty" class="empty" hidden>
+    <h2>No story in the graph yet</h2>
+    <p>Load the sample story to see a cast, their dossiers, and the threads still open.</p>
+  </section>
+
+  <footer class="foot">
+    Places, creatures, factions, and items are reserved for manuscript ingest. This ledger tracks the cast of one book.
+  </footer>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

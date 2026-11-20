@@ -30,7 +30,7 @@ class CharacterGenerator:
     def __init__(self, llm: LLMClient) -> None:
         self.llm = llm
     
-    def generate_character(self, user_prompt: str, context: dict[str, Any]) -> CharacterSuggestion:
+    def generate_character(self, user_prompt: str, context: dict[str, Any]) -> CharacterSuggestionList:
         messages = [
             {
                 "role": "system",
